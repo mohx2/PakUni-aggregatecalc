@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pak Uni Aggregate Calculator & Merit History Suite Pro</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #070a12;
+            color: #f3f4f6;
+        }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card-hover:hover {
+            border-color: rgba(99, 102, 241, 0.4);
+            box-shadow: 0 0 25px rgba(99, 102, 241, 0.15);
+        }
+        .glow-text {
+            text-shadow: 0 0 20px rgba(99, 102, 241, 0.6);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090d16;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-12 antialiased selection:bg-indigo-500 selection:text-white">
+
+    <!-- Header / Navbar -->
+    <header class="border-b border-slate-800/80 bg-slate-950/90 sticky top-0 z-50 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-emerald-400 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                    <i class="fa-solid fa-graduation-cap text-white text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-lg tracking-tight text-white flex items-center gap-2">
+                        PakUni<span class="text-indigo-400 font-normal">Calc</span>
+                        <span class="text-[10px] bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-0.5 rounded-full font-semibold">2.0 ULTRA</span>
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Tab Switcher Navigation -->
+            <div class="flex items-center gap-1 bg-slate-900 p-1 rounded-xl border border-slate-800">
+                <button id="tab-btn-calc" onclick="switchTab('calc')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white transition shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-calculator"></i> Calculator
+                </button>
+                <button id="tab-btn-merit" onclick="switchTab('merit')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition flex items-center gap-2">
+                    <i class="fa-solid fa-chart-line text-emerald-400"></i> Merit History Hub
+                </button>
+                <button id="tab-btn-ibcc" onclick="switchTab('ibcc')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition flex items-center gap-2">
+                    <i class="fa-solid fa-award text-amber-400"></i> IBCC Helper
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+
+        <!-- ================= TAB 1: CALCULATOR WORKSPACE ================= -->
+        <div id="tab-content-calc" class="space-y-6">
+
+            <!-- Presets Grid Header -->
+            <section>
+                <div class="flex justify-between items-end mb-3">
+                    <div>
+                        <h2 class="text-xl font-bold text-white tracking-tight">Select University Preset</h2>
+                        <p class="text-slate-400 text-xs">Official aggregate formulas updated for top Pakistani institutions.</p>
+                    </div>
+                </div>
+
+                <!-- University Presets Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2.5" id="uni-presets">
+                    <!-- Dynamically rendered via JS -->
+                </div>
+            </section>
+
+            <!-- Inputs & Output Split -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+                <!-- Left Column: Inputs Form (7 Cols) -->
+                <div class="lg:col-span-7 space-y-5">
+
+                    <!-- Education System & Hafiz Quran Toggles -->
+                    <div class="glass-card rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center">
+                                <i class="fa-solid fa-sliders"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-xs text-white">System Settings</h3>
+                                <p class="text-[11px] text-slate-400">Education board & bonus marks</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <!-- Hafiz-e-Quran Checkbox -->
+                            <label class="flex items-center gap-2 text-xs text-slate-300 cursor-pointer bg-slate-900 border border-slate-800 px-2.5 py-1.5 rounded-lg">
+                                <input type="checkbox" id="chk-hafiz" onchange="calculateAggregate()" class="rounded border-slate-700 text-indigo-600 focus:ring-indigo-500 bg-slate-950">
+                                <span>Hafiz-e-Quran (+20 Marks)</span>
+                            </label>
+
+                            <!-- Board Mode -->
+                            <div class="inline-flex p-1 bg-slate-900 rounded-lg border border-slate-800">
+                                <button id="btn-fsc" onclick="setBoardMode('fsc')" class="px-2.5 py-1 rounded-md text-[11px] font-semibold bg-indigo-600 text-white transition">F.Sc / Matric</button>
+                                <button id="btn-olevel" onclick="setBoardMode('olevel')" class="px-2.5 py-1 rounded-md text-[11px] font-semibold text-slate-400 hover:text-white transition">O / A Levels</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Input Form Card -->
+                    <div class="glass-card rounded-2xl p-5 relative overflow-hidden">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-5">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-pen-to-square text-indigo-400 text-sm"></i>
+                                <h3 class="font-bold text-white text-sm" id="preset-title-display">NUST Mode</h3>
+                            </div>
+                            <span id="preset-formula-badge" class="text-xs font-mono bg-slate-800 text-slate-300 px-2.5 py-1 rounded-md border border-slate-700">
+                                Matric 10% | FSc 15% | Test 75%
+                            </span>
+                        </div>
+
+                        <form id="calc-form" onsubmit="event.preventDefault(); calculateAggregate();">
+                            <div class="space-y-4">
+
+                                <!-- Section 1: Matric / O-Level -->
+                                <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <label class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+                                            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                                            <span id="label-matric">Matric / SSC Marks</span>
+                                        </label>
+                                        <div class="text-xs text-indigo-400 font-medium">
+                                            Weightage: <span id="weight-matric" class="font-bold text-white">10</span>%
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <div>
+                                            <span class="text-[10px] text-slate-400 block mb-1">Obtained Marks</span>
+                                            <input type="number" id="marks-matric-obt" placeholder="e.g. 1020" step="any" oninput="calculateAggregate()"
+                                                class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
+                                        </div>
+                                        <div>
+                                            <span class="text-[10px] text-slate-400 block mb-1">Total Marks</span>
+                                            <input type="number" id="marks-matric-total" value="1100" step="any" oninput="calculateAggregate()"
+                                                class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Section 2: FSc / HSSC-1 / A-Level -->
+                                <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <label class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+                                            <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+                                            <span id="label-fsc">HSSC-1 / F.Sc Part-1 Marks</span>
+                                        </label>
+                                        <div class="text-xs text-indigo-400 font-medium">
+                                            Weightage: <span id="weight-fsc" class="font-bold text-white">15</span>%
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <div>
+                                            <span class="text-[10px] text-slate-400 block mb-1">Obtained Marks</span>
+                                            <input type="number" id="marks-fsc-obt" placeholder="e.g. 480" step="any" oninput="calculateAggregate()"
+                                                class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
+                                        </div>
+                                        <div>
+                                            <span class="text-[10px] text-slate-400 block mb-1">Total Marks</span>
+                                            <input type="number" id="marks-fsc-total" value="520" step="any" oninput="calculateAggregate()"
+                                                class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Section 3: Entry Test -->
+                                <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <label class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+                                            <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                                            <span id="label-test">Entry Test Marks</span>
+                                        </label>
+                                        <div class="text-xs text-indigo-400 font-medium">
+                                            Weightage: <span id="weight-test" class="font-bold text-white">75</span>%
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <div>
+                                            <span class="text-[10px] text-slate-400 block mb-1">Obtained Marks</span>
+                                            <input type="number" id="marks-test-obt" placeholder="e.g. 152" step="any" oninput="calculateAggregate()"
+                                                class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
+                                        </div>
+                                        <div>
+                                            <span class="text-[10px] text-slate-400 block mb-1">Total Test Marks</span>
+                                            <input type="number" id="marks-test-total" value="200" step="any" oninput="calculateAggregate()"
+                                                class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Custom Weightage Controls -->
+                                <div id="custom-weightage-container" class="hidden bg-indigo-950/20 p-3.5 rounded-xl border border-indigo-500/30 space-y-2">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-[11px] font-bold text-indigo-300 uppercase">Custom Weightage Distribution (%)</span>
+                                        <span id="weight-sum-badge" class="text-xs font-bold text-emerald-400">Sum: 100%</span>
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-2">
+                                        <div>
+                                            <label class="text-[10px] text-slate-400 block mb-1">Matric %</label>
+                                            <input type="number" id="custom-w-matric" value="10" min="0" max="100" oninput="updateCustomWeights()"
+                                                class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2 py-1 text-xs text-white">
+                                        </div>
+                                        <div>
+                                            <label class="text-[10px] text-slate-400 block mb-1">FSc %</label>
+                                            <input type="number" id="custom-w-fsc" value="40" min="0" max="100" oninput="updateCustomWeights()"
+                                                class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2 py-1 text-xs text-white">
+                                        </div>
+                                        <div>
+                                            <label class="text-[10px] text-slate-400 block mb-1">Test %</label>
+                                            <input type="number" id="custom-w-test" value="50" min="0" max="100" oninput="updateCustomWeights()"
+                                                class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2 py-1 text-xs text-white">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+                <!-- Right Column: Results & Analytics (5 Cols) -->
+                <div class="lg:col-span-5 space-y-5">
+
+                    <!-- Result Score Display Card -->
+                    <div class="glass-card rounded-2xl p-6 text-center relative overflow-hidden bg-gradient-to-b from-slate-900 to-slate-950 border-indigo-500/30 shadow-2xl">
+                        <span class="text-xs font-semibold uppercase tracking-widest text-slate-400 block mb-1">Estimated Aggregate</span>
+
+                        <div class="py-2">
+                            <div class="inline-flex items-baseline gap-1">
+                                <span id="final-aggregate" class="text-6xl font-black text-white tracking-tight glow-text">0.00</span>
+                                <span class="text-2xl font-bold text-indigo-400">%</span>
+                            </div>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div class="w-full bg-slate-800/80 rounded-full h-2.5 mb-5 p-0.5 border border-slate-700/50">
+                            <div id="aggregate-bar" class="bg-gradient-to-r from-indigo-500 via-indigo-400 to-emerald-400 h-1.5 rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
+                        </div>
+
+                        <!-- Breakdown Table -->
+                        <div class="space-y-2 text-xs border-t border-slate-800/80 pt-3">
+                            <div class="flex justify-between text-slate-400">
+                                <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle text-[8px] text-emerald-400"></i> SSC / O-Level:</span>
+                                <span id="contrib-matric" class="font-mono font-bold text-slate-200">0.00%</span>
+                            </div>
+                            <div class="flex justify-between text-slate-400">
+                                <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle text-[8px] text-indigo-400"></i> HSSC / A-Level:</span>
+                                <span id="contrib-fsc" class="font-mono font-bold text-slate-200">0.00%</span>
+                            </div>
+                            <div class="flex justify-between text-slate-400">
+                                <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle text-[8px] text-amber-400"></i> Entry Test:</span>
+                                <span id="contrib-test" class="font-mono font-bold text-slate-200">0.00%</span>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="grid grid-cols-2 gap-2 mt-5">
+                            <button onclick="copySummary()" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 py-2 rounded-xl font-semibold text-xs transition flex items-center justify-center gap-1.5">
+                                <i class="fa-regular fa-copy"></i> Copy Breakdown
+                            </button>
+                            <button onclick="switchTab('merit')" class="bg-indigo-600 hover:bg-indigo-500 text-white py-2 rounded-xl font-semibold text-xs transition flex items-center justify-center gap-1.5 shadow-lg shadow-indigo-600/20">
+                                <i class="fa-solid fa-chart-bar"></i> Check Cutoffs
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Target Analyzer Widget -->
+                    <div class="glass-card rounded-2xl p-5 border-slate-800">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-bullseye text-emerald-400 text-sm"></i>
+                                <h3 class="font-bold text-white text-xs uppercase tracking-wider">Target Entry Test Analyzer</h3>
+                            </div>
+                            <span class="text-[9px] bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 px-2 py-0.5 rounded-full font-mono">REVERSE CALC</span>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div>
+                                <label class="text-[10px] text-slate-300 block mb-1">Target Aggregate Score (%)</label>
+                                <input type="number" id="target-aggregate-input" placeholder="e.g. 82.5" step="0.1" min="0" max="100" oninput="calculateRequiredTestScore()"
+                                    class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500 transition">
+                            </div>
+
+                            <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-center">
+                                <span class="text-[10px] text-slate-400 block mb-0.5">Required Test Score</span>
+                                <div class="text-2xl font-extrabold text-emerald-400 font-mono" id="required-test-score">-- / --</div>
+                                <span class="text-[10px] text-slate-500 block" id="required-test-percent">Enter target to calculate needed marks</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ================= TAB 2: MERIT HISTORY HUB ================= -->
+        <div id="tab-content-merit" class="hidden space-y-5">
+            <div class="glass-card rounded-2xl p-6 border-slate-800">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-5 mb-5">
+                    <div>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-chart-line text-emerald-400"></i> Closing Merit History & Cutoffs
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-1">Official recent closing aggregate percentages for top Pakistani BS Degree programs.</p>
+                    </div>
+
+                    <!-- Search & Filter Controls -->
+                    <div class="flex flex-wrap items-center gap-2">
+                        <input type="text" id="merit-search" placeholder="Search Program or Uni..." oninput="renderMeritTable()"
+                            class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500">
+                        <select id="merit-uni-filter" onchange="renderMeritTable()"
+                            class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-indigo-500">
+                            <option value="ALL">All Universities</option>
+                            <option value="NUST">NUST Islamabad</option>
+                            <option value="FAST">FAST-NUCES</option>
+                            <option value="GIKI">GIKI</option>
+                            <option value="COMSATS">COMSATS</option>
+                            <option value="UET">UET Lahore</option>
+                            <option value="PIEAS">PIEAS</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Aggregate Check Banner -->
+                <div class="bg-indigo-950/30 border border-indigo-500/20 rounded-xl p-3 mb-4 flex items-center justify-between text-xs">
+                    <span class="text-indigo-200">
+                        Your Current Aggregate: <strong id="merit-user-agg-display" class="text-white font-mono text-sm">0.00%</strong>
+                    </span>
+                    <span class="text-[11px] text-slate-400">Badges compare your score with historical cutoffs.</span>
+                </div>
+
+                <!-- Merit Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-slate-300 border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-800 text-slate-400 font-semibold uppercase text-[10px] tracking-wider">
+                                <th class="py-3 px-3">University</th>
+                                <th class="py-3 px-3">Program</th>
+                                <th class="py-3 px-3">Campus</th>
+                                <th class="py-3 px-3">Recent Cutoff (%)</th>
+                                <th class="py-3 px-3">Admission Chances</th>
+                            </tr>
+                        </thead>
+                        <tbody id="merit-table-body" class="divide-y divide-slate-800/60">
+                            <!-- Populated via Javascript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= TAB 3: IBCC O/A LEVEL HELPER ================= -->
+        <div id="tab-content-ibcc" class="hidden space-y-5">
+            <div class="glass-card rounded-2xl p-6 border-slate-800">
+                <div class="border-b border-slate-800 pb-4 mb-5">
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-award text-amber-400"></i> O/A-Level IBCC Grade Equivalence Converter
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-1">Select your Cambridge grades to convert them automatically into Pakistani IBCC Marks (A*=90, A=85, B=75, C=65, D=55, E=45).</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <!-- O-Level Section -->
+                    <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800 space-y-3">
+                        <h3 class="font-bold text-xs uppercase text-emerald-400 tracking-wider">O-Level (8 Subjects Standard)</h3>
+                        <div class="grid grid-cols-2 gap-2" id="olevel-grades-container">
+                            <!-- Rendered by JS -->
+                        </div>
+                        <div class="pt-2 border-t border-slate-800 flex justify-between items-center text-xs">
+                            <span class="text-slate-400">O-Level Equivalence:</span>
+                            <span id="olevel-result-text" class="font-bold font-mono text-emerald-400">0 / 900 (0.00%)</span>
+                        </div>
+                    </div>
+
+                    <!-- A-Level Section -->
+                    <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800 space-y-3">
+                        <h3 class="font-bold text-xs uppercase text-indigo-400 tracking-wider">A-Level (3 Subjects Standard)</h3>
+                        <div class="grid grid-cols-1 gap-2" id="alevel-grades-container">
+                            <!-- Rendered by JS -->
+                        </div>
+                        <div class="pt-2 border-t border-slate-800 flex justify-between items-center text-xs">
+                            <span class="text-slate-400">A-Level Equivalence:</span>
+                            <span id="alevel-result-text" class="font-bold font-mono text-indigo-400">0 / 1100 (0.00%)</span>
+                        </div>
+
+                        <button onclick="applyIBCCMarksToCalc()" class="w-full mt-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 rounded-xl text-xs transition shadow-lg shadow-indigo-600/20">
+                            Apply Marks to Aggregate Calculator
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- JavaScript Core Logic -->
+    <script>
+        // Preset Definitions
+        const PRESETS = {
+            nust: { name: 'NUST', sub: 'NET Test', icon: 'fa-graduation-cap', matricW: 10, fscW: 15, testW: 75, testTotalDefault: 200, fscTotalDefault: 520, matricTotalDefault: 1100, labelFsc: 'HSSC-1 / F.Sc Part-1 Marks', labelTest: 'NET Score (Out of 200)' },
+            fast: { name: 'FAST-NUCES', sub: 'NU Test / NAT', icon: 'fa-laptop-code', matricW: 10, fscW: 40, testW: 50, testTotalDefault: 100, fscTotalDefault: 520, matricTotalDefault: 1100, labelFsc: 'HSSC-1 / F.Sc Part-1 Marks', labelTest: 'NU Test Marks (Out of 100)' },
+            giki: { name: 'GIKI', sub: 'Admission Test', icon: 'fa-atom', matricW: 0, fscW: 15, testW: 85, testTotalDefault: 200, fscTotalDefault: 520, matricTotalDefault: 1100, labelFsc: 'HSSC-1 / F.Sc Part-1 Marks', labelTest: 'GIKI Test Score' },
+            comsats: { name: 'COMSATS', sub: 'NTS NAT', icon: 'fa-university', matricW: 10, fscW: 40, testW: 50, testTotalDefault: 100, fscTotalDefault: 1100, matricTotalDefault: 1100, labelFsc: 'HSSC Total Marks', labelTest: 'NTS NAT Score' },
+            uet: { name: 'UET Lahore', sub: 'ECAT Criteria', icon: 'fa-gear', matricW: 17, fscW: 50, testW: 33, testTotalDefault: 400, fscTotalDefault: 520, matricTotalDefault: 1100, labelFsc: 'HSSC-1 / F.Sc Marks', labelTest: 'ECAT Marks (Out of 400)' },
+            pieas: { name: 'PIEAS', sub: 'Written Test', icon: 'fa-microchip', matricW: 15, fscW: 25, testW: 60, testTotalDefault: 100, fscTotalDefault: 1100, matricTotalDefault: 1100, labelFsc: 'HSSC Total Marks', labelTest: 'PIEAS Test Score' },
+            custom: { name: 'Custom', sub: 'Set Weights', icon: 'fa-sliders', matricW: 10, fscW: 40, testW: 50, testTotalDefault: 100, fscTotalDefault: 1100, matricTotalDefault: 1100, labelFsc: 'HSSC Marks', labelTest: 'Entry Test Marks' }
+        };
+
+        // Merit History Database
+        const MERIT_DATABASE = [
+            { uni: 'NUST', prog: 'BS Computer Science', campus: 'Islamabad (SEECS)', cutoff: 78.4 },
+            { uni: 'NUST', prog: 'BS Software Engineering', campus: 'Islamabad (SEECS)', cutoff: 77.1 },
+            { uni: 'NUST', prog: 'BS Artificial Intelligence', campus: 'Islamabad (SEECS)', cutoff: 76.8 },
+            { uni: 'NUST', prog: 'BS Mechanical Engineering', campus: 'Islamabad (SMME)', cutoff: 66.5 },
+            { uni: 'NUST', prog: 'BS Electrical Engineering', campus: 'Islamabad (SEECS)', cutoff: 68.2 },
+            { uni: 'FAST', prog: 'BS Computer Science', campus: 'Islamabad', cutoff: 73.5 },
+            { uni: 'FAST', prog: 'BS Software Engineering', campus: 'Islamabad', cutoff: 71.8 },
+            { uni: 'FAST', prog: 'BS Data Science', campus: 'Lahore', cutoff: 70.2 },
+            { uni: 'FAST', prog: 'BS Cyber Security', campus: 'Islamabad', cutoff: 70.5 },
+            { uni: 'GIKI', prog: 'BS Computer Science', campus: 'Topi, Swabi', cutoff: 74.0 },
+            { uni: 'GIKI', prog: 'BS Artificial Intelligence', campus: 'Topi, Swabi', cutoff: 72.5 },
+            { uni: 'COMSATS', prog: 'BS Computer Science', campus: 'Islamabad', cutoff: 85.2 },
+            { uni: 'COMSATS', prog: 'BS Software Engineering', campus: 'Islamabad', cutoff: 83.8 },
+            { uni: 'UET', prog: 'BS Computer Science', campus: 'Lahore Main', cutoff: 81.5 },
+            { uni: 'UET', prog: 'BS Mechanical Engineering', campus: 'Lahore Main', cutoff: 73.2 },
+            { uni: 'PIEAS', prog: 'BS Computer Science', campus: 'Islamabad', cutoff: 72.8 }
+        ];
+
+        let currentPresetKey = 'nust';
+        let currentBoardMode = 'fsc';
+
+        window.onload = () => {
+            renderPresetCards();
+            selectPreset('nust');
+            renderIBCCFields();
+            renderMeritTable();
+        };
+
+        // Tab Navigation
+        function switchTab(tab) {
+            ['calc', 'merit', 'ibcc'].forEach(t => {
+                document.getElementById(`tab-content-${t}`).classList.add('hidden');
+                const btn = document.getElementById(`tab-btn-${t}`);
+                btn.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition flex items-center gap-2";
+            });
+
+            document.getElementById(`tab-content-${tab}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-btn-${tab}`);
+            activeBtn.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white transition shadow-sm flex items-center gap-2";
+
+            if (tab === 'merit') renderMeritTable();
+        }
+
+        // Render Presets
+        function renderPresetCards() {
+            const container = document.getElementById('uni-presets');
+            container.innerHTML = '';
+            Object.keys(PRESETS).forEach(key => {
+                const item = PRESETS[key];
+                const card = document.createElement('button');
+                card.id = `preset-card-${key}`;
+                card.onclick = () => selectPreset(key);
+                card.className = `glass-card glass-card-hover p-2.5 rounded-xl text-left transition relative overflow-hidden flex flex-col justify-between h-20 border border-slate-800`;
+                card.innerHTML = `
+                    <div class="flex items-center justify-between w-full">
+                        <i class="fa-solid ${item.icon} text-indigo-400 text-xs"></i>
+                        <span class="text-[9px] font-mono text-slate-500">${item.testW}% Test</span>
+                    </div>
+                    <div>
+                        <div class="font-bold text-xs text-white">${item.name}</div>
+                        <div class="text-[9px] text-slate-400 truncate">${item.sub}</div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function selectPreset(key) {
+            currentPresetKey = key;
+            const preset = PRESETS[key];
+
+            Object.keys(PRESETS).forEach(k => {
+                const el = document.getElementById(`preset-card-${k}`);
+                if (k === key) {
+                    el.className = `glass-card p-2.5 rounded-xl text-left transition relative overflow-hidden flex flex-col justify-between h-20 border border-indigo-500 bg-indigo-950/30 shadow-lg shadow-indigo-500/10`;
+                } else {
+                    el.className = `glass-card glass-card-hover p-2.5 rounded-xl text-left transition relative overflow-hidden flex flex-col justify-between h-20 border border-slate-800`;
+                }
+            });
+
+            document.getElementById('preset-title-display').innerText = `${preset.name} Mode`;
+            document.getElementById('preset-formula-badge').innerText = `SSC ${preset.matricW}% | HSSC ${preset.fscW}% | Test ${preset.testW}%`;
+
+            document.getElementById('weight-matric').innerText = preset.matricW;
+            document.getElementById('weight-fsc').innerText = preset.fscW;
+            document.getElementById('weight-test').innerText = preset.testW;
+
+            document.getElementById('label-fsc').innerText = preset.labelFsc;
+            document.getElementById('label-test').innerText = preset.labelTest;
+
+            document.getElementById('marks-test-total').value = preset.testTotalDefault;
+            document.getElementById('marks-fsc-total').value = preset.fscTotalDefault;
+            document.getElementById('marks-matric-total').value = preset.matricTotalDefault;
+
+            const customContainer = document.getElementById('custom-weightage-container');
+            if (key === 'custom') {
+                customContainer.classList.remove('hidden');
+                updateCustomWeights();
+            } else {
+                customContainer.classList.add('hidden');
+            }
+
+            calculateAggregate();
+        }
+
+        function updateCustomWeights() {
+            if (currentPresetKey !== 'custom') return;
+            const mW = parseFloat(document.getElementById('custom-w-matric').value) || 0;
+            const fW = parseFloat(document.getElementById('custom-w-fsc').value) || 0;
+            const tW = parseFloat(document.getElementById('custom-w-test').value) || 0;
+
+            const sum = mW + fW + tW;
+            const badge = document.getElementById('weight-sum-badge');
+            badge.innerText = `Sum: ${sum}%`;
+            badge.className = sum === 100 ? 'text-xs font-bold text-emerald-400' : 'text-xs font-bold text-rose-400';
+
+            PRESETS.custom.matricW = mW;
+            PRESETS.custom.fscW = fW;
+            PRESETS.custom.testW = tW;
+
+            document.getElementById('weight-matric').innerText = mW;
+            document.getElementById('weight-fsc').innerText = fW;
+            document.getElementById('weight-test').innerText = tW;
+
+            calculateAggregate();
+        }
+
+        function setBoardMode(mode) {
+            currentBoardMode = mode;
+            const btnFsc = document.getElementById('btn-fsc');
+            const btnOlevel = document.getElementById('btn-olevel');
+
+            if (mode === 'olevel') {
+                btnOlevel.className = "px-2.5 py-1 rounded-md text-[11px] font-semibold bg-indigo-600 text-white transition shadow-sm";
+                btnFsc.className = "px-2.5 py-1 rounded-md text-[11px] font-semibold text-slate-400 hover:text-white transition";
+                document.getElementById('label-matric').innerText = "O-Level IBCC Marks";
+                document.getElementById('label-fsc').innerText = "A-Level IBCC Marks";
+            } else {
+                btnFsc.className = "px-2.5 py-1 rounded-md text-[11px] font-semibold bg-indigo-600 text-white transition shadow-sm";
+                btnOlevel.className = "px-2.5 py-1 rounded-md text-[11px] font-semibold text-slate-400 hover:text-white transition";
+                document.getElementById('label-matric').innerText = "Matric / SSC Marks";
+                document.getElementById('label-fsc').innerText = PRESETS[currentPresetKey].labelFsc;
+            }
+
+            calculateAggregate();
+        }
+
+        function calculateAggregate() {
+            const preset = PRESETS[currentPresetKey];
+            const isHafiz = document.getElementById('chk-hafiz').checked;
+
+            const mObt = parseFloat(document.getElementById('marks-matric-obt').value) || 0;
+            const mTot = parseFloat(document.getElementById('marks-matric-total').value) || 1100;
+
+            let fObt = parseFloat(document.getElementById('marks-fsc-obt').value) || 0;
+            const fTot = parseFloat(document.getElementById('marks-fsc-total').value) || 1100;
+
+            if (isHafiz) fObt += 20;
+
+            const tObt = parseFloat(document.getElementById('marks-test-obt').value) || 0;
+            const tTot = parseFloat(document.getElementById('marks-test-total').value) || 200;
+
+            const mContrib = mTot > 0 ? (mObt / mTot) * preset.matricW : 0;
+            const fContrib = fTot > 0 ? (fObt / fTot) * preset.fscW : 0;
+            const tContrib = tTot > 0 ? (tObt / tTot) * preset.testW : 0;
+
+            const totalAggregate = mContrib + fContrib + tContrib;
+
+            document.getElementById('final-aggregate').innerText = totalAggregate.toFixed(2);
+            document.getElementById('aggregate-bar').style.width = `${Math.min(totalAggregate, 100)}%`;
+
+            document.getElementById('contrib-matric').innerText = `${mContrib.toFixed(2)}% / ${preset.matricW}%`;
+            document.getElementById('contrib-fsc').innerText = `${fContrib.toFixed(2)}% / ${preset.fscW}%`;
+            document.getElementById('contrib-test').innerText = `${tContrib.toFixed(2)}% / ${preset.testW}%`;
+
+            document.getElementById('merit-user-agg-display').innerText = `${totalAggregate.toFixed(2)}%`;
+
+            calculateRequiredTestScore();
+        }
+
+        function calculateRequiredTestScore() {
+            const targetAgg = parseFloat(document.getElementById('target-aggregate-input').value);
+            const displayScore = document.getElementById('required-test-score');
+            const displayPercent = document.getElementById('required-test-percent');
+
+            if (isNaN(targetAgg) || targetAgg <= 0) {
+                displayScore.innerText = "-- / --";
+                displayPercent.innerText = "Enter target to calculate needed marks";
+                return;
+            }
+
+            const preset = PRESETS[currentPresetKey];
+            const isHafiz = document.getElementById('chk-hafiz').checked;
+
+            const mObt = parseFloat(document.getElementById('marks-matric-obt').value) || 0;
+            const mTot = parseFloat(document.getElementById('marks-matric-total').value) || 1100;
+
+            let fObt = parseFloat(document.getElementById('marks-fsc-obt').value) || 0;
+            if (isHafiz) fObt += 20;
+            const fTot = parseFloat(document.getElementById('marks-fsc-total').value) || 1100;
+
+            const tTot = parseFloat(document.getElementById('marks-test-total').value) || 200;
+
+            const mContrib = mTot > 0 ? (mObt / mTot) * preset.matricW : 0;
+            const fContrib = fTot > 0 ? (fObt / fTot) * preset.fscW : 0;
+
+            const neededTestContrib = targetAgg - (mContrib + fContrib);
+            const requiredTestPct = (neededTestContrib / preset.testW) * 100;
+            const requiredTestScore = (requiredTestPct / 100) * tTot;
+
+            if (requiredTestScore > tTot) {
+                displayScore.innerText = `${Math.ceil(requiredTestScore)} / ${tTot}`;
+                displayScore.className = "text-2xl font-extrabold text-rose-400 font-mono";
+                displayPercent.innerText = `Exceeds max test total! (${requiredTestPct.toFixed(1)}%)`;
+            } else if (requiredTestScore <= 0) {
+                displayScore.innerText = `0 / ${tTot}`;
+                displayScore.className = "text-2xl font-extrabold text-emerald-400 font-mono";
+                displayPercent.innerText = `Target reached with current academics!`;
+            } else {
+                displayScore.innerText = `${Math.ceil(requiredTestScore)} / ${tTot}`;
+                displayScore.className = "text-2xl font-extrabold text-emerald-400 font-mono";
+                displayPercent.innerText = `Requires ~${requiredTestPct.toFixed(1)}% in test`;
+            }
+        }
+
+        // IBCC Grade Converter Engine
+        const GRADE_MARKS = { 'A*': 90, 'A': 85, 'B': 75, 'C': 65, 'D': 55, 'E': 45 };
+
+        function renderIBCCFields() {
+            const oContainer = document.getElementById('olevel-grades-container');
+            oContainer.innerHTML = '';
+            for (let i = 1; i <= 8; i++) {
+                oContainer.innerHTML += `
+                    <div>
+                        <span class="text-[9px] text-slate-400 block mb-0.5">Subject ${i}</span>
+                        <select onchange="calcIBCC()" class="ibcc-o-grade w-full bg-slate-950 border border-slate-800 rounded px-2 py-1 text-xs text-white">
+                            <option value="A*">A* (90)</option>
+                            <option value="A" selected>A (85)</option>
+                            <option value="B">B (75)</option>
+                            <option value="C">C (65)</option>
+                            <option value="D">D (55)</option>
+                        </select>
+                    </div>
+                `;
+            }
+
+            const aContainer = document.getElementById('alevel-grades-container');
+            aContainer.innerHTML = '';
+            for (let i = 1; i <= 3; i++) {
+                aContainer.innerHTML += `
+                    <div class="flex items-center justify-between bg-slate-950 p-2 rounded border border-slate-800">
+                        <span class="text-xs text-slate-300">A-Level Subject ${i}</span>
+                        <select onchange="calcIBCC()" class="ibcc-a-grade bg-slate-900 border border-slate-800 rounded px-2 py-1 text-xs text-white">
+                            <option value="A*">A* (90)</option>
+                            <option value="A" selected>A (85)</option>
+                            <option value="B">B (75)</option>
+                            <option value="C">C (65)</option>
+                            <option value="D">D (55)</option>
+                        </select>
+                    </div>
+                `;
+            }
+            calcIBCC();
+        }
+
+        function calcIBCC() {
+            let oTotal = 0;
+            document.querySelectorAll('.ibcc-o-grade').forEach(s => oTotal += GRADE_MARKS[s.value]);
+            const oMax = 8 * 90; // 720
+            const oEquivScaled = Math.round((oTotal / oMax) * 900); // Out of 900
+
+            let aTotal = 0;
+            document.querySelectorAll('.ibcc-a-grade').forEach(s => aTotal += GRADE_MARKS[s.value]);
+            const aMax = 3 * 90; // 270
+            const aEquivScaled = Math.round(((oTotal + aTotal) / (oMax + aMax)) * 1100); // Total HSSC out of 1100
+
+            document.getElementById('olevel-result-text').innerText = `${oEquivScaled} / 900 (${((oEquivScaled/900)*100).toFixed(2)}%)`;
+            document.getElementById('alevel-result-text').innerText = `${aEquivScaled} / 1100 (${((aEquivScaled/1100)*100).toFixed(2)}%)`;
+
+            window.ibccCalcResults = { oMarks: oEquivScaled, aMarks: aEquivScaled };
+        }
+
+        function applyIBCCMarksToCalc() {
+            if (!window.ibccCalcResults) return;
+            setBoardMode('olevel');
+            document.getElementById('marks-matric-obt').value = window.ibccCalcResults.oMarks;
+            document.getElementById('marks-matric-total').value = 900;
+            document.getElementById('marks-fsc-obt').value = window.ibccCalcResults.aMarks;
+            document.getElementById('marks-fsc-total').value = 1100;
+
+            switchTab('calc');
+            calculateAggregate();
+        }
+
+        // Render Merit History
+        function renderMeritTable() {
+            const search = document.getElementById('merit-search').value.toLowerCase();
+            const filterUni = document.getElementById('merit-uni-filter').value;
+            const userAgg = parseFloat(document.getElementById('final-aggregate').innerText) || 0;
+
+            const tbody = document.getElementById('merit-table-body');
+            tbody.innerHTML = '';
+
+            MERIT_DATABASE.forEach(item => {
+                if (filterUni !== 'ALL' && item.uni !== filterUni) return;
+                if (search && !item.prog.toLowerCase().includes(search) && !item.uni.toLowerCase().includes(search)) return;
+
+                const diff = userAgg - item.cutoff;
+                let chanceBadge = '';
+
+                if (userAgg === 0) {
+                    chanceBadge = `<span class="bg-slate-800 text-slate-400 text-[10px] px-2 py-0.5 rounded-full border border-slate-700">Enter Aggregate</span>`;
+                } else if (diff >= 2) {
+                    chanceBadge = `<span class="bg-emerald-500/10 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/30"><i class="fa-solid fa-circle-check"></i> High Chance (+${diff.toFixed(1)}%)</span>`;
+                } else if (diff >= 0) {
+                    chanceBadge = `<span class="bg-amber-500/10 text-amber-400 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-500/30"><i class="fa-solid fa-triangle-exclamation"></i> Competitive (+${diff.toFixed(1)}%)</span>`;
+                } else {
+                    chanceBadge = `<span class="bg-rose-500/10 text-rose-400 text-[10px] font-bold px-2 py-0.5 rounded-full border border-rose-500/30"><i class="fa-solid fa-circle-xmark"></i> Low (${diff.toFixed(1)}%)</span>`;
+                }
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-800/30 transition">
+                        <td class="py-2.5 px-3 font-bold text-white">${item.uni}</td>
+                        <td class="py-2.5 px-3 text-slate-200">${item.prog}</td>
+                        <td class="py-2.5 px-3 text-slate-400 text-[11px]">${item.campus}</td>
+                        <td class="py-2.5 px-3 font-mono font-bold text-indigo-400">${item.cutoff.toFixed(1)}%</td>
+                        <td class="py-2.5 px-3">${chanceBadge}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function copySummary() {
+            const agg = document.getElementById('final-aggregate').innerText;
+            const presetName = PRESETS[currentPresetKey].name;
+            const summaryText = `🎓 PakUniCalc Report (${presetName})\nTotal Aggregate: ${agg}%\nSSC: ${document.getElementById('contrib-matric').innerText}\nHSSC: ${document.getElementById('contrib-fsc').innerText}\nTest: ${document.getElementById('contrib-test').innerText}`;
+            navigator.clipboard.writeText(summaryText).then(() => alert('Summary copied to clipboard!'));
+        }
+    </script>
+</body>
+</html>
